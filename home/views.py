@@ -11,6 +11,8 @@ def index(request):
     return render(request, "index.html")
 
 def signin(request):
+    if(request.user.is_anonymous == False): 
+        return redirect('/')
     if(request.method == "POST"):
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -26,7 +28,16 @@ def signout(request):
     logout(request)
     return redirect('/signin')
 
+def update(request):
+    fname = request.post.get('fname')
+    lname = request.post.get('lname')
+    username = request.post.get('username')
+    email = request.post.get('email')
+    print(fname)
+
 def profile(request):
+    if(request.method == "post"):
+        update(request)
     all_users = User.objects.values()
     data=[]
     concern=-2
@@ -35,7 +46,26 @@ def profile(request):
     for i in range(len(data)):
         if(str(data[i]['username']) == str(request.user)):
             concern=i
+    ll=str(data[concern]['last_login'])
+    doj=str(data[concern]['date_joined'])
+    staff=""
+    admin=""
+    if(data[concern]['is_staff']==True and data[concern]['is_superuser']==False):
+        staff="Yes"
+        admin="No"
+    elif(data[concern]['is_staff']==True and data[concern]['is_superuser']==True):
+        staff="No"
+        admin="Yes"
     context = {
-        'hello':data[concern]
-    }
+        'data':data[concern],
+        'fname':data[concern]['first_name'],
+        'lname':data[concern]['last_name'],
+        'username':data[concern]['username'],
+        'email':data[concern]['email'],
+        'last_login':ll[0:ll.index(' ')],
+        'doj':doj[0:doj.index(' ')],
+        'staff':staff,
+        'admin':admin,
+        'update':update
+        }
     return render(request, "profile.html", context)

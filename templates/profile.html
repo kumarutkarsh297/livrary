@@ -1,8 +1,126 @@
 {% extends 'base.html' %}
 {% block title %}Profile{% endblock title %}
 {% block body %}
+<style>
+    body {
+        background: whitesmoke;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: black;
+    }
+
+    .labels {
+        font-size: 18px;
+    }
+</style>
+<script>
+    function swap() {
+        let firstname = document.getElementById("firstname")
+        let lastname = document.getElementById("lastname")
+        let username = document.getElementById("username")
+        let email = document.getElementById("email")
+        let edit = document.getElementById("edit")
+        let save = document.getElementById("save")
+        firstname.disabled = false;
+        lastname.disabled = false;
+        email.disabled = false;
+        edit.classList.add("disabled");
+        save.classList.remove("disabled")
+    }
+    function swap1() {
+        let firstname = document.getElementById("firstname")
+        let lastname = document.getElementById("lastname")
+        let username = document.getElementById("username")
+        let email = document.getElementById("email")
+        let edit = document.getElementById("edit")
+        let save = document.getElementById("save")
+        firstname.disabled = true;
+        lastname.disabled = true;
+        email.disabled = true;
+        edit.classList.remove("disabled");
+        save.classList.add("disabled");
+        
+    }
+</script>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <h1>{{request.user}}</h1>
-    {{hello}}
+    <div class="container">
+        <div class="container rounded bg-white mt-5 mb-5">
+            <div class="row">
+                <div class="col-md-3 border-right">
+                    <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                        <img class="rounded-circle mt-5" width="150px"
+                            src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
+                            class="font-weight-bold">{{fname}} {{lname}} </span> <span
+                            class="text-black-50">{{email}}</span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="col-md-5 border-right">
+                    <div class="p-3 py-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h1 class="text-right">Profile</h4>
+                        </div>
+                        <form action="/profile" method="post">
+                            {% csrf_token %}
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label class="labels">First Name</label>
+                                    <input type="text" name="fname" class="form-control" placeholder="First Name"
+                                        id="firstname" value={{fname}} disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="labels">Last Name</label>
+                                    <input type="text" name="lname" class="form-control" value={{lname}} id="lastname"
+                                        placeholder="Last Name" disabled>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <label class="labels">Username</label>
+                                    <input type="text" name="username" class="form-control" id="username"
+                                        placeholder="Username" value={{username}} disabled>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <label class="labels">Email ID</label>
+                                    <input type="text" name="email" class="form-control" id="email"
+                                        placeholder="E-Mail ID" value={{email}} disabled>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label class="labels">Last Login</label>
+                                    <input type="text" class="form-control" id="lastlogin" placeholder="Last Login"
+                                        value={{last_login}} disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="labels">Date of Joining</label>
+                                    <input type="text" class="form-control" value={{doj}} id="dateofjoining"
+                                        placeholder="Date of Joining" disabled>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label class="labels">Staff Account</label>
+                                    <input type="text" class="form-control" placeholder="country" value={{staff}}
+                                        disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="labels">Administrator Account</label>
+                                    <input type="text" class="form-control" value={{admin}} placeholder="state"
+                                        disabled>
+                                </div>
+                            </div>
+                            <div class="mt-5 text-center">
+                                <a class="btn btn-primary mx-3" id="edit" onclick=swap()>Edit</a>
+                                <button class="btn btn-success disabled" id="save" onclick=swap1() {{update}}>Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 {% endblock body %}

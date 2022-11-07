@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import logout, authenticate, login
+from django.contrib import messages
+from email import message
 
 def index(request):
     if(request.user.is_anonymous): 
@@ -29,14 +31,19 @@ def signout(request):
     return redirect('/signin')
 
 def update(request):
-    fname = request.post.get('fname')
-    lname = request.post.get('lname')
-    username = request.post.get('username')
-    email = request.post.get('email')
-    print(fname)
+    id = request.POST.get('id')
+    fname = request.POST.get('fname')
+    lname =  request.POST.get('lname')
+    email = request.POST.get('email')
+    u = User.objects.get(id=id)
+    u.first_name = fname
+    u.last_name = lname
+    u.email = email
+    u.save()
+    messages.success(request, "Profile Updated Successfully")
 
 def profile(request):
-    if(request.method == "post"):
+    if(request.method == "POST"):
         update(request)
     all_users = User.objects.values()
     data=[]
@@ -66,6 +73,9 @@ def profile(request):
         'doj':doj[0:doj.index(' ')],
         'staff':staff,
         'admin':admin,
-        'update':update
+        'id':data[concern]['id']
         }
     return render(request, "profile.html", context)
+
+def issue(request):
+    return render(request, "issue.html")

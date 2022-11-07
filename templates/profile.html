@@ -14,6 +14,10 @@
     .labels {
         font-size: 18px;
     }
+    .dis {
+        background-color : #e9ecef;
+        pointer-events: none;
+    }
 </style>
 <script>
     function swap() {
@@ -23,9 +27,9 @@
         let email = document.getElementById("email")
         let edit = document.getElementById("edit")
         let save = document.getElementById("save")
-        firstname.disabled = false;
-        lastname.disabled = false;
-        email.disabled = false;
+        firstname.classList.remove("dis");
+        lastname.classList.remove("dis");
+        email.classList.remove("dis");
         edit.classList.add("disabled");
         save.classList.remove("disabled")
     }
@@ -36,23 +40,31 @@
         let email = document.getElementById("email")
         let edit = document.getElementById("edit")
         let save = document.getElementById("save")
-        firstname.disabled = true;
-        lastname.disabled = true;
-        email.disabled = true;
+        firstname.classList.add("dis");
+        lastname.classList.add("dis");
+        email.classList.add("dis");
         edit.classList.remove("disabled");
         save.classList.add("disabled");
-        
+
     }
 </script>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="container">
-        <div class="container rounded bg-white mt-5 mb-5">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show my-0 mt-4" role="alert" style="position: fixed; width: 50%; right: 0px; top: 30px;">
+                    <strong>{{message}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="container rounded bg-white mt-1 mb-5">
             <div class="row">
                 <div class="col-md-3 border-right">
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                         <img class="rounded-circle mt-5" width="150px"
                             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
-                            class="font-weight-bold">{{fname}} {{lname}} </span> <span
+                            class="font-weight-bold">{{fname}} {{lname}}</span> <span
                             class="text-black-50">{{email}}</span>
                         <span></span>
                     </div>
@@ -62,18 +74,19 @@
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h1 class="text-right">Profile</h4>
                         </div>
-                        <form action="/profile" method="post">
+                        <form action="/profile" method="POST">
                             {% csrf_token %}
                             <div class="row mt-2">
                                 <div class="col-md-6">
                                     <label class="labels">First Name</label>
-                                    <input type="text" name="fname" class="form-control" placeholder="First Name"
-                                        id="firstname" value={{fname}} disabled>
+                                    <input type="text" name="id" id="id" value={{id}} style="display: none;">
+                                    <input type="text" name="fname" class="form-control dis" placeholder="First Name"
+                                        id="firstname" value={{fname}}>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="labels">Last Name</label>
-                                    <input type="text" name="lname" class="form-control" value={{lname}} id="lastname"
-                                        placeholder="Last Name" disabled>
+                                    <input type="text" name="lname" class="form-control dis" value={{lname}} id="lastname"
+                                        placeholder="Last Name">
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -84,8 +97,8 @@
                                 </div>
                                 <div class="col-md-12 mt-3">
                                     <label class="labels">Email ID</label>
-                                    <input type="text" name="email" class="form-control" id="email"
-                                        placeholder="E-Mail ID" value={{email}} disabled>
+                                    <input type="text" name="email" class="form-control dis" id="email"
+                                        placeholder="E-Mail ID" value={{email}}>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -114,7 +127,8 @@
                             </div>
                             <div class="mt-5 text-center">
                                 <a class="btn btn-primary mx-3" id="edit" onclick=swap()>Edit</a>
-                                <button class="btn btn-success disabled" id="save" onclick=swap1() {{update}}>Save</button>
+                                <button class="btn btn-success disabled" id="save" type="submit"
+                                    onclick=swap1()>Save</button>
                             </div>
                         </form>
                     </div>

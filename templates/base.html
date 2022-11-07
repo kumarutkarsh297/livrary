@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-        <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
     <meta name="theme-color" content="#712cf9">
 
     <style>
@@ -65,7 +65,26 @@
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
         }
+
+        .division {
+            margin: 8px 0px;
+            font-size: 1.1rem;
+        }
+
+        .division:hover,
+        .division>a:hover,
+        .active {
+            color: white !important;
+            background-color: black;
+        }
+        .active>* {
+            color: white !important;
+        }
     </style>
+
+    <script>
+        console.log(document.getElementById('a'));
+    </script>
 
     <link href="../static/dashboard.css" rel="stylesheet">
 </head>
@@ -73,7 +92,8 @@
 <body>
 
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/"> <img src="../static/favicon.png" class="mx-2" alt="" width="20" height="20">LIVRARY</a>
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/"> <img src="../static/favicon.png" class="mx-2"
+                alt="" width="20" height="20">LIVRARY</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
             data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -83,14 +103,17 @@
             aria-label="Search">
         <div class="navbar-nav">
             <div class="nav-item text-nowrap dropdown">
-                <a class="nav-link px-5 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link px-5 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     Welcome, {{request.user.first_name}}
-                  </a>
-                  <ul class="dropdown-menu position-absolute text-center" style="right: 2px;">
+                </a>
+                <ul class="dropdown-menu position-absolute text-center" style="right: 2px;">
                     <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item" href="/signout">Sign Out</a></li>
-                  </ul>
+                </ul>
             </div>
         </div>
     </header>
@@ -99,75 +122,47 @@
         <div class="row">
             <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div class="position-sticky pt-3 sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">
+                    <ul class="bar nav flex-column">
+                        <li id="a" class="nav-item division active">
+                            <a class="nav-link" aria-current="page" href="/">
                                 <span data-feather="home" class="align-text-bottom"></span>
                                 Dashboard
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item division">
+                            <a class="nav-link" href="/issue">
                                 <span data-feather="file" class="align-text-bottom"></span>
-                                Orders
+                                Issue a Book
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item division">
+                            <a class="nav-link" href="/return">
                                 <span data-feather="shopping-cart" class="align-text-bottom"></span>
-                                Products
+                                Return a Book
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item division">
+                            <a class="nav-link" href="/members">
+                                <span data-feather="shopping-cart" class="align-text-bottom"></span>
+                                Members
+                            </a>
+                        </li>
+                        <li class="nav-item division">
+                            <a class="nav-link" href="/current">
                                 <span data-feather="users" class="align-text-bottom"></span>
-                                Customers
+                                Currently Issued
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item division">
+                            <a class="nav-link" href="/charges">
                                 <span data-feather="bar-chart-2" class="align-text-bottom"></span>
-                                Reports
+                                Renting Charges
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item division">
+                            <a class="nav-link" href="/defaulters">
                                 <span data-feather="layers" class="align-text-bottom"></span>
-                                Integrations
-                            </a>
-                        </li>
-                    </ul>
-
-                    <h6
-                        class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
-                        <span>Saved reports</span>
-                        <a class="link-secondary" href="#" aria-label="Add a new report">
-                            <span data-feather="plus-circle" class="align-text-bottom"></span>
-                        </a>
-                    </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text" class="align-text-bottom"></span>
-                                Current month
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text" class="align-text-bottom"></span>
-                                Last quarter
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text" class="align-text-bottom"></span>
-                                Social engagement
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text" class="align-text-bottom"></span>
-                                Year-end sale
+                                Defaulters
                             </a>
                         </li>
                     </ul>

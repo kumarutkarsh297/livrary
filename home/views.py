@@ -79,3 +79,21 @@ def profile(request):
 
 def issue(request):
     return render(request, "issue.html")
+
+def available(request):
+    return render(request, "available.html")
+
+def returns(request):
+    return render(request, "return.html")
+
+def members(request):
+    return render(request, "members.html")
+
+def current(request):
+    return render(request, "current.html")
+
+def charges(request):
+    return render(request, "charges.html")
+
+def defaulters(request):
+    return render(request, "defaulters.html")

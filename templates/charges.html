@@ -1,13 +1,43 @@
 {% extends 'base.html' %}
 {% block title %}Charges{% endblock title %}
 {% block body %}
+<style>
+    .dis {
+        background-color: #e9ecef;
+        pointer-events: none;
+    }
+
+    label {
+        font-size: 1rem;
+        font-weight: bold;
+        padding-top: 8px;
+        padding-bottom: 10px;
+    }
+
+    input {
+        padding: 7px;
+        border: none;
+        border-bottom: 1px solid blue;
+        text-align: center;
+        font-size: 1.3rem;
+    }
+</style>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Book Renting Charges</h1>
     </div>
+    <div class="my-5">
+        <form class="mx-auto" action="/charges" method="POST">
+            {% csrf_token %}
+            <label>Late Fine</label>
+            <input class="dis" type="text" name="fine" id="fine" value={{late}}>
+            <p>Can't be changed. Contact Administrator to Change.</p>
+        </form>
+    </div>
     <div>
-        <table className="table datatable text-center" style="width: 100%; font-size: 20px; border: 1px solid black; border-radius: 20px !important; outline: none;">
+        <table className="table datatable text-center"
+            style="width: 100%; font-size: 20px; border: 1px solid black; border-radius: 20px !important; outline: none;">
             <thead style="border-bottom: 2px solid black; color: white; background-color: #36304a;">
                 <tr class="text-center" style="width: inherit;">
                     <th style="border-right: 2px solid black;" scope="col">Book ID</th>

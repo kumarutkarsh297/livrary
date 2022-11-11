@@ -6,6 +6,7 @@ from home.models import Books
 from home.models import Members
 from home.models import Rates
 from home.models import Issued
+from home.models import Late
 from django.contrib.auth import get_user_model
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
@@ -135,6 +136,7 @@ def returns(request):
     if(request.method == "POST"):
         done(request)
     d3 = list(Issued.objects.values())
+    d4 = list(Late.objects.values())
     days=[]
     taken=[]
     for i in d3:
@@ -147,7 +149,7 @@ def returns(request):
         'data':d3,
         'days':days,
         'taken':taken,
-        'late':10,
+        'late':d4[0]['fine'],
     }
     return render(request, "return.html" ,context)
 
@@ -166,6 +168,7 @@ def current(request):
 def charges(request):
     d1 = list(Rates.objects.values())
     d2 = list(Books.objects.values())
+    d3 = list(Late.objects.values())
     d=[]
     a=0
     for j in d2:
@@ -175,6 +178,7 @@ def charges(request):
         a+=1
     context = {
         'data1':d1,
+        'late': d3[0]['fine'],
     }
     return render(request, "charges.html", context)
 

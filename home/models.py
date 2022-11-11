@@ -33,3 +33,8 @@ class Issued(models.Model):
     charged = models.CharField(max_length=5, default='0')
     def __str__(self):
         return self.ref
+class Late(models.Model):
+    typ = models.CharField(max_length=7)
+    fine = models.CharField(max_length=5)
+    def __str__(self):
+        return self.typ

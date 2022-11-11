@@ -1,4 +1,34 @@
 {% extends 'base.html' %}
 {% block title %}Available Books{% endblock title %}
 {% block body %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Books Available to Borrow</h1>
+    </div>
+    <div>
+        <table className="table datatable text-center" style="width: 100%; font-size: 20px; border: 1px solid black; border-radius: 20px !important; outline: none;">
+            <thead style="border-bottom: 2px solid black; color: white; background-color: #36304a;">
+                <tr class="text-center" style="width: inherit;">
+                    <th style="border-right: 2px solid black;" scope="col">Book ID</th>
+                    <th style="border-right: 2px solid black;" scope="col">Book Name</th>
+                    <th style="border-right: 2px solid black;" scope="col">ISBN</th>
+                    <th style="border-right: 2px solid black;" scope="col">Author</th>
+                    <th style="border-right: 2px solid black;" scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr class="text-center" style="font-size: 18px;">
+                    <td style=" border-bottom: 1px solid black; border-right: 2px solid black;">{{i.id}}</td>
+                    <td style=" border-bottom: 1px solid black; border-right: 2px solid black;">{{i.bname}}</td>
+                    <td style=" border-bottom: 1px solid black; border-right: 2px solid black;">{{i.bisbn}}</td>
+                    <td style=" border-bottom: 1px solid black; border-right: 2px solid black;">{{i.bauthor}}</td>
+                    <td style=" border-bottom: 1px solid black; border-right: 2px solid black;">{{i.description}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
 {% endblock body %}

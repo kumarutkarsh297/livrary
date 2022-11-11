@@ -1,5 +1,113 @@
 {% extends 'base.html' %}
 {% block title %}Issue Books{% endblock title %}
 {% block body %}
-
+<style>
+    .dis {
+        background-color : #e9ecef;
+        pointer-events: none;
+    }
+    label {
+        font-size: 1rem;
+        font-weight: bold;
+        padding-top: 8px;
+        padding-bottom: 10px;
+    }
+    input {
+        padding: 7px;
+        border: none;
+        border-bottom: 1px solid blue;
+        text-align: center;
+    }
+</style>
+<script>
+    function get(data, data1) {
+        let f = -1
+        let c = 0
+        data.forEach(element => {
+            if (data1 === element['isbn']) {
+                f = c
+            }
+            c += 1
+        });
+        if (f != -1) {
+            document.getElementById("name").value = data[f]['bname']
+            document.getElementById("charge").value = data[f]['charge']
+        } else {
+            document.getElementById("name").value = ""
+            document.getElementById("charge").value = ""
+            alert("No Such Book Found")
+        }
+    }
+    function get1(data, data1) {
+        let f = -1
+        let c = 0
+        data.forEach(element => {
+            if (data1 === element['phno']) {
+                f = c
+            }
+            c += 1
+        });
+        if (f != -1) {
+            document.getElementById("mid").value = data[f]['id']
+            document.getElementById("cname").value = data[f]['name']
+        } else {
+            document.getElementById("mid").value = ""
+            document.getElementById("cname").value = ""
+            alert("No Member Found")
+        }
+    }
+</script>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show my-0 mt-4" role="alert"
+        style="position: fixed; width: 50%; right: 35px; top: 30px;">
+        <strong>{{message}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Issue a Book</h1>
+    </div>
+    <div>
+        <form class="mx-auto border p-3" style="width: 1000px; padding: 10px; border-radius: 5px;" action="/issue" method="POST">
+            {% csrf_token %}
+            <div class="my-3">
+                <label for="isbn">ISBN Number</label>
+                <input class="w-100 input-lg" type="text" id="isbn" name="isbn" placeholder="Enter ISBN" required>
+                <a class="w-100 btn btn-lg btn-primary my-2" onclick="get({{data1}}, document.getElementById('isbn').value)">Find Book</a>
+            </div>
+            <div class="my-3">
+                <label for="">Book Name</label>
+                <input class="w-100 input-lg dis" type="text" name="bookname" id="name" required>
+                <label for="">Charges</label>
+                <input class="w-100 input-lg dis" type="text" name="charge" id="charge" required>
+            </div>
+            <div class="my-3">
+                <label for="phno">Phone Number</label>
+                <input class="w-100 input-lg" type="text" id="phno" placeholder="Enter Phone Number" required>
+                <a class="w-100 btn btn-lg btn-primary my-2" onclick="get1({{data2}},document.getElementById('phno').value)">Find
+                    Member</a>
+            </div>
+            <div class="my-3">
+                <label for="">Member ID</label>
+                <input class="w-100 input-lg dis" type="text" id="mid" required>
+                <label for="">Member Name</label>
+                <input class="w-100 input-lg dis" type="text" name="cname" id="cname" required>
+            </div>
+            <div class="my-3">
+                <label for="from">Issued On</label>
+                <input class="w-100 input-lg" type="date" name="from" id="from" required>
+                <label for="to">Issued Upto</label>
+                <input class="w-100 input-lg" type="date" name="to" id="to" required>
+            </div>
+            <div class="my-3">
+                <button class="btn w-100 btn-lg btn-danger my-3" type="reset">Reset</button>
+                <button class="btn w-100 btn-lg btn-success" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</main>
 {% endblock body %}

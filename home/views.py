@@ -2,10 +2,15 @@ from ast import Not
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from home.models import Books
+from home.models import Members
+from home.models import Rates
+from home.models import Issued
 from django.contrib.auth import get_user_model
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from email import message
+import random
 
 def index(request):
     if(request.user.is_anonymous): 
@@ -77,23 +82,74 @@ def profile(request):
         }
     return render(request, "profile.html", context)
 
+def flush(request):
+    isbn = request.POST.get('isbn')
+    bookname = request.POST.get('bookname')
+    cname = request.POST.get('cname')
+    fromd = request.POST.get('from')
+    tod = request.POST.get('to')
+    charge = request.POST.get('charge')
+    ref = str(chr(random.randint(97,122))+str(random.randint(1,7))+str(random.randint(5,9))+chr(random.randint(100,118)))
+    issued = Issued(ref = ref, isbn = isbn, bookname = bookname, customername = cname, from_date = fromd, to_date = tod, charge = charge, returned = False)
+    issued.save()
+    messages.success(request, "Book Issued Ref. No : "+ref)
+
 def issue(request):
-    return render(request, "issue.html")
+    if(request.method == "POST"):
+        flush(request)
+    d1 = list(Rates.objects.values())
+    d2 = list(Books.objects.values())
+    d3 = list(Members.objects.values())
+    for i in d3:
+        i['doj']=""
+    d=[]
+    a=0
+    for j in d2:
+        d.append(j['bname'])
+    for i in d1:
+        i['bname'] = d[a]
+        a+=1
+    context = {
+        'data1':d1,
+        'data2':d3,
+    }
+    return render(request, "issue.html",context)
 
 def available(request):
-    return render(request, "available.html")
+    context = {
+        'data':list(Books.objects.values())
+    }
+    return render(request, "available.html", context)
 
 def returns(request):
     return render(request, "return.html")
 
 def members(request):
-    return render(request, "members.html")
+    context = {
+        'data':list(Members.objects.values())
+    }
+    return render(request, "members.html", context)
 
 def current(request):
-    return render(request, "current.html")
+    context = {
+        'data':list(Issued.objects.values())
+    }
+    return render(request, "current.html", context)
 
 def charges(request):
-    return render(request, "charges.html")
+    d1 = list(Rates.objects.values())
+    d2 = list(Books.objects.values())
+    d=[]
+    a=0
+    for j in d2:
+        d.append(j['bname'])
+    for i in d1:
+        i['bname'] = d[a]
+        a+=1
+    context = {
+        'data1':d1,
+    }
+    return render(request, "charges.html", context)
 
 def defaulters(request):
     return render(request, "defaulters.html")

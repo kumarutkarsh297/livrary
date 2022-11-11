@@ -74,20 +74,20 @@
             font-size: 1rem;
         }
 
-        .division:hover,
+        /* .division:hover,
         .division>a:hover,
         .active {
             color: white !important;
             background-color: black;
-        }
+        } */
         .active>* {
             color: white !important;
         }
     </style>
     <script>
+        let paths = {}
         console.log(window.location.pathname.slice(1));
         console.log(document.getElementsByClassName('division'));
-        console.log(window.document.getElementById('home'));
     </script>
 </head>
 
@@ -124,7 +124,7 @@
             <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div class="position-sticky pt-3 sidebar-sticky">
                     <ul class="nav flex-column">
-                        <li id="home" class="nav-item division active">
+                        <li class="nav-item division">
                             <a class="nav-link" aria-current="page" href="/">
                                 <span><i class="bi bi-grid-1x2-fill"><span class="mx-2">Dashboard</span></i></span>
                             </a>
@@ -167,7 +167,7 @@
                     </ul>
                     <p class="text-center my-3">
                         <span style="font-size: 16px; " class="d-block">CopyRight &copy; LIVRARY 2022</span>
-                        <span style="font-size: 16px; " class="d-block">Designed and Maintained By<a target="_blank" href="https://utkarshkumar.vercel.app"> Utkarsh Kumar</a></span>
+                        <span style="font-size: 16px; " class="d-block">Designed and Maintained By<a target="_blank" style="color: green; text-decoration: none;" href="https://utkarshkumar.vercel.app"> Utkarsh Kumar</a></span>
                     </p>
                 </div>
             </nav>

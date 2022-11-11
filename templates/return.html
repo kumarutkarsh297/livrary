@@ -1,5 +1,102 @@
 {% extends 'base.html' %}
 {% block title %}Return Book{% endblock title %}
 {% block body %}
-
+<style>
+    .dis {
+        background-color : #e9ecef;
+        pointer-events: none;
+    }
+    label {
+        font-size: 1rem;
+        font-weight: bold;
+        padding-top: 8px;
+        padding-bottom: 10px;
+    }
+    input {
+        padding: 7px;
+        border: none;
+        border-bottom: 1px solid blue;
+        text-align: center;
+        font-size: 1.3rem;
+    }
+</style>
+<script>
+    function get(late,data,days,taken,data1) {
+        let f = -1
+        let c = 0
+        data.forEach(element => {
+            if (data1 === element['ref']) {
+                f = c
+            }
+            c += 1
+        });
+        if (f != -1) {
+            document.getElementById("name").value = data[f]["bookname"]
+            document.getElementById("rate").value = data[f]["charge"]
+            document.getElementById("from").value = data[f]["from_date"]
+            document.getElementById("to").value = data[f]["to_date"]
+            document.getElementById("cname").value = data[f]["customername"]
+            document.getElementById("days").value = taken[f]
+            document.getElementById("had").value = days[f]
+            document.getElementById("pay").value = (parseInt(days[f])*parseInt(data[f]['charge']) + (parseInt(taken[f]) - parseInt(days[f])) * late).toString()
+        } else {
+            document.getElementById("name").value = ""
+            document.getElementById("rate").value = ""
+            document.getElementById("from").value = ""
+            document.getElementById("to").value = ""
+            document.getElementById("cname").value = ""
+            document.getElementById("days").value = ""
+            document.getElementById("had").value = ""
+            document.getElementById("pay").value = ""
+            alert("No Such Record Found")
+        }
+    }
+</script>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show my-0 mt-4" role="alert"
+        style="position: fixed; width: 50%; right: 35px; top: 30px;">
+        <strong>{{message}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Return a Book</h1>
+    </div>
+    <div>
+        <form class="mx-auto border p-3" style="width: 1000px; padding: 10px; border-radius: 5px;" action="/return" method="POST">
+            {% csrf_token %}
+            <div class="my-3">
+                <label for="ref">Reference Number</label>
+                <input class="w-100 input-lg" type="text" id="ref" name="ref" placeholder="Enter Reference Number" required>
+                <a class="w-100 btn btn-lg btn-primary my-2" onclick="get({{late}},{{data}},{{days}},{{taken}} ,document.getElementById('ref').value)">Find Borrowing</a>
+            </div>
+            <div class="my-3">
+                <label for="">Book Name</label>
+                <input class="w-100 input-lg dis" type="text" name="bookname" id="name" required>
+                <label for="">Rate</label>
+                <input class="w-100 input-lg dis" type="text" name="rate" id="rate" required>
+                <label for="">Issued On</label>
+                <input class="w-100 input-lg dis" type="date" name="from" id="from" required>
+                <label for="">Issued Upto</label>
+                <input class="w-100 input-lg dis" type="date" name="to" id="to" required>
+                <label for="">Member Name</label>
+                <input class="w-100 input-lg dis" type="text" name="cname" id="cname" required>
+                <label for="">No. of Days (Taken)</label>
+                <input class="w-100 input-lg dis" type="text" name="days" id="days" required>
+                <label for="">No. of Days (Issued For)</label>
+                <input class="w-100 input-lg dis" type="text" name="had" id="had" required>
+                <label for="">Net Payable</label>
+                <input class="w-100 input-lg dis" type="text" name="pay" id="pay" required>
+            </div>
+            <div class="my-3">
+                <button class="btn w-100 btn-lg btn-danger my-3" type="reset">Reset</button>
+                <button class="btn w-100 btn-lg btn-success" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</main>
 {% endblock body %}

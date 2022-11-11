@@ -17,6 +17,7 @@
                     <th style="border-right: 2px solid black;" scope="col">Issued On</th>
                     <th style="border-right: 2px solid black;" scope="col">Issued Upto</th>
                     <th style="border-right: 2px solid black;" scope="col">Returned</th>
+                    <th style="border-right: 2px solid black;" scope="col">Amount Paid</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +30,7 @@
                     <td style=" border-bottom: 1px solid black; border-right: 2px solid black;">{{i.from_date}}</td>
                     <td style=" border-bottom: 1px solid black; border-right: 2px solid black;">{{i.to_date}}</td>
                     <td style=" border-bottom: 1px solid black; border-right: 2px solid black;">{% if i.returned == True %}Yes{% else %}No{% endif %}</td>
+                    <td style=" border-bottom: 1px solid black; border-right: 2px solid black;">{{i.charged}}</td>
                 </tr>
                 {% endfor %}
             </tbody>

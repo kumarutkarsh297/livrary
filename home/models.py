@@ -30,5 +30,6 @@ class Issued(models.Model):
     to_date = models.DateField()
     charge = models.CharField(max_length=5)
     returned = models.BooleanField()
+    charged = models.CharField(max_length=5, default='0')
     def __str__(self):
         return self.ref

@@ -11,6 +11,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from email import message
 import random
+from datetime import date as date_n
 
 def index(request):
     if(request.user.is_anonymous): 
@@ -121,8 +122,34 @@ def available(request):
     }
     return render(request, "available.html", context)
 
+def done(request):
+    ref = request.POST.get('ref')
+    pay = request.POST.get('pay')
+    d = Issued.objects.get(ref=ref)
+    d.charged = pay
+    d.returned = True
+    d.save()
+    messages.success(request, "Book Returning Successful ! Ref ID: "+ref+" Amount Paid : "+pay)
+
 def returns(request):
-    return render(request, "return.html")
+    if(request.method == "POST"):
+        done(request)
+    d3 = list(Issued.objects.values())
+    days=[]
+    taken=[]
+    for i in d3:
+        days.append(str((i['to_date']-i['from_date']).days))
+        taken.append(str((date_n.today()-i['from_date']).days))
+        i['from_date']=str(i['from_date'])
+        i['to_date']=str(i['to_date'])
+        i['returned']=str(i['returned'])
+    context = {
+        'data':d3,
+        'days':days,
+        'taken':taken,
+        'late':10,
+    }
+    return render(request, "return.html" ,context)
 
 def members(request):
     context = {
